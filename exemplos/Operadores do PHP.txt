@@ -18,4 +18,6 @@ Operadores Especiais
     Null Coalescing Operator = condicao_nula ?? "valor padrão";
     Elvis Operator = condicao_truthy ?: "valor padrão";
 
-    
+Operadores de Incremento e Decremento
+    -- (decremento)
+    ++ (incremento)

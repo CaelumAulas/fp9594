@@ -1,0 +1,21 @@
+Operadores Lógicos
+    && (E) = and
+    || (OU) = or
+    ! (NOT)
+
+Operadores de Comparação
+    == (igualdade)
+    === (igualdade estrita)
+    != (diferença)
+    !== (diferença estrita)
+    > (maior que)
+    < (menor que)
+    >= (maior ou igual a)
+    <= (menor ou igual a)
+
+Operadores Especiais
+    Operador ternário = (condicao) ? "valor 1" : "valor 2";
+    Null Coalescing Operator = condicao_nula ?? "valor padrão";
+    Elvis Operator = condicao_truthy ?: "valor padrão";
+
+    

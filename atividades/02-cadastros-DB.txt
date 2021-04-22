@@ -1,0 +1,10 @@
+1) Dentro do Banco de Dados Caelum crie uma tabela chamada "mensagens_contato"
+2) Essa tabela deverá ter a seguinte estrutura de colunas:
+
+    Coluna "id" = Tipo INT, Incremento Automático, Chave Primária 
+    Coluna "nome_completo" = Tipo VARCHAR, tamanho 50, Não nula
+    Coluna "email" = Tipo VARCHAR, tamanho 50, Não nula 
+    Coluna "assunto" = Tipo VARCHAR, tamanho 50, Não nula 
+    Coluna "mensagem" = Tipo TEXT, Não nula 
+
+3) Insira 3 registros de exemplo apenas para deixar a tabela populada com dados iniciais

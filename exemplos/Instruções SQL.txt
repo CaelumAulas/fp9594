@@ -1,0 +1,13 @@
+CREATE DATABASE nomeBaseDeDados; // Cria um banco de dados no servidor MySQL
+DROP DATABASE nomeBaseDeDados; // Remove um banco de dados no servidor MySQL 
+
+CREATE TABLE nomeTabela( coluna1, coluna2, ...) // Cria uma tabela em um banco de dados 
+DROP TABLE nomeTabela; // Remove uma tabela 
+TRUNCATE TABLE nomeTabela; // Reseta a tabela 
+
+
+CRUD = Create, Read, Update, Delete
+INSERT INTO nomeTabela (colunas) VALUES (valores) // Insere um registro numa tabela 
+DELETE FROM nomeTabela WHERE condicao // Exclui um registro numa tabela
+SELECT colunas FROM nomeTabela [WHERE condicao ORDER BY coluna...] // Seleção de registros numa tabela 
+UPDATE nomeTabela SET colunas=valores WHERE condicao // Atualiza um registro numa tabela

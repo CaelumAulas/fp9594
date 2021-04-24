@@ -1,5 +1,22 @@
 <?php 
 
+// Configurações Gerais 
+require_once '../src/config.php';
+
+try 
+{
+    if ($_GET)
+    {
+        $id = (int) ($_GET['excluir'] ?? 0);
+        excluir_marca($id);
+        set_app_mensagem('Marca excluída com sucesso!');
+    }
+}
+catch(Exception $exc)
+{
+    set_app_mensagem($exc->getMessage(), 'erro');
+}
+
 $titulo_pagina = "Marcas";
 require_once 'includes/cabecalho-admin.php';
 ?>
@@ -11,6 +28,9 @@ require_once 'includes/cabecalho-admin.php';
     <p>
         Confira abaixo a lista das marcas cadastradas.
     </p>
+
+    <?php show_app_mensagem(); ?>
+
     <table class="table table-hover">
         <thead>
             <tr>
@@ -20,12 +40,14 @@ require_once 'includes/cabecalho-admin.php';
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Chevrolet</td>
-                <td><a href="editar-marca.php" class="btn btn-primary"><i class="fas fa-edit"></i></a></td>
-                <td><a href="#" class="btn btn-danger"><i class="far fa-trash-alt"></i></a></td>
-            </tr>
+            <?php foreach (get_marcas() as $marca) : ?>
+                <tr>
+                    <td><?= $marca['id'] ?></td>
+                    <td><?= $marca['marca'] ?></td>
+                    <td><a href="editar-marca.php?id=<?= $marca['id'] ?>" class="btn btn-primary"><i class="fas fa-edit"></i></a></td>
+                    <td><a href="listar-marcas.php?excluir=<?= $marca['id'] ?>" class="btn btn-danger"><i class="far fa-trash-alt"></i></a></td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 <?php require_once 'includes/rodape-admin.php'; ?>

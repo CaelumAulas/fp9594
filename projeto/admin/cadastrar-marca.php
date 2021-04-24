@@ -1,5 +1,22 @@
 <?php 
 
+// Configurações Gerais
+require_once '../src/config.php';
+
+try 
+{
+    if ($_POST)
+    {
+        $marca = $_POST['marca'] ?? "";
+        cadastrar_marca($marca);
+        set_app_mensagem('Marca cadastrada com sucesso!');
+    }
+}
+catch(Exception $exc)
+{
+    set_app_mensagem($exc->getMessage(), 'erro');
+}
+
 $titulo_pagina = "Cadastrar Marca";
 require_once 'includes/cabecalho-admin.php';
 ?>
@@ -13,6 +30,9 @@ require_once 'includes/cabecalho-admin.php';
     <p>
         Utilize o formulário abaixo para cadastrar uma nova marca.
     </p>
+
+    <?php show_app_mensagem(); ?>
+
     <form method="POST" class="row">
         <div class="input-group col-md-9">
             <div class="input-group-prepend">

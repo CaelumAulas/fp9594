@@ -17,3 +17,48 @@ function get_menu()
     );
 }
 
+/**
+ * Expoe a estrutura de uma variável
+ */
+function custom_print($var)
+{
+    print '<pre>';
+    print_r($var);
+    print '</pre>';
+}
+
+/**
+ * Configura a mensagem de erro/sucesso a ser exibida para o usuário
+ * @param string $msg       Mensagem a ser exibida
+ * @param string $tipo      Tipo da mensagem (erro, sucesso, etc.)
+ */
+function set_app_mensagem(string $msg, string $tipo = 'sucesso')
+{
+    $classes_css = array(
+        'sucesso' => 'alert-success',
+        'erro' => 'alert-danger',
+        'aviso' => 'alert-warning'
+    );
+
+    $GLOBALS['msg_app'] = array(
+        'mensagem' => $msg,
+        'classe' => $classes_css[$tipo]
+    );
+}
+
+/**
+ * Exibe a mensagem configurada pela função "set_app_mensagem"
+ */
+function show_app_mensagem()
+{
+    $msg = $GLOBALS['msg_app'] ?? null;
+
+    if ($msg)
+    {
+        print "
+            <div class=\"alert {$msg['classe']}\">
+                {$msg['mensagem']}
+            </div>
+        ";
+    }
+}

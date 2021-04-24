@@ -1,5 +1,27 @@
 <?php 
 
+// Configurações Gerais
+require_once '../src/config.php';
+
+try 
+{
+    if ($_POST)
+    {
+        $login = $_POST['usuario'] ?? "";
+        $senha = $_POST['senha'] ?? "";
+        $csenha = $_POST['csenha'] ?? "";
+        $ativo = isset($_POST['ativo']);
+        cadastrar_usuario($login, $senha, $csenha, $ativo);
+        
+        unset($_POST);
+        set_app_mensagem('Usuário cadastrado com sucesso!');
+    }
+}
+catch(Exception $exc)
+{
+    set_app_mensagem($exc->getMessage(), 'erro');
+}
+
 $titulo_pagina = "Cadastrar Usuário";
 require_once 'includes/cabecalho-admin.php';
 ?>
@@ -13,12 +35,15 @@ require_once 'includes/cabecalho-admin.php';
     <p>
         Utilize o formulário abaixo para cadastrar um novo usuário.
     </p>
+
+    <?php show_app_mensagem(); ?>
+
     <form method="POST" class="row">
         <div class="input-group col-md-12 mb-3">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="usuario">Usuário:</label>
             </div>
-            <input type="text" name="usuario" id="usuario" class="form-control" placeholder="" />
+            <input type="text" name="usuario" id="usuario" class="form-control" placeholder="" value="<?= $_POST['usuario'] ?? '' ?>" />
         </div>
         <div class="input-group col-md-4 mb-3">
             <div class="input-group-prepend">
@@ -35,7 +60,7 @@ require_once 'includes/cabecalho-admin.php';
         <div class="input-group col-md-4 mb-3">
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <input type="checkbox" id="ativo" name="ativo" />
+                    <input type="checkbox" id="ativo" name="ativo" <?= (isset($_POST['ativo'])) ? 'checked' : null ?> />
                 </div>
             </div>
             <label class="form-control" for="ativo">Ativo?</label>

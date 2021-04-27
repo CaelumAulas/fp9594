@@ -3,6 +3,26 @@
 // Configurações Gerais
 require_once "../src/config.php";
 
+try 
+{
+    if ($_POST)
+    {
+        $modelo = $_POST['modelo'] ?? '';
+        $marca_id = (int) ($_POST['marca'] ?? 0);
+        $preco = (float) ($_POST['preco'] ?? 0);
+        $foto = $_POST['foto'] ?? '';
+        $descricao = $_POST['descricao'] ?? '';
+
+        cadastrar_veiculo($modelo, $marca_id, $preco, $foto, $descricao);
+        unset($_POST);
+        set_app_mensagem('Veículo cadastrado com sucesso!');
+    }
+}
+catch(Exception $exc)
+{
+    set_app_mensagem($exc->getMessage(), 'erro');
+}
+
 $titulo_pagina = "Cadastrar Veículo";
 require_once 'includes/cabecalho-admin.php';
 ?>
@@ -16,12 +36,15 @@ require_once 'includes/cabecalho-admin.php';
     <p>
         Utilize o formulário abaixo para cadastrar um novo veículo.
     </p>
+
+    <?php show_app_mensagem(); ?>
+
     <form method="POST" class="row">
         <div class="input-group col-md-6 mb-3">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="marca">Modelo:</label>
             </div>
-            <input type="text" name="modelo" id="modelo" class="form-control" placeholder="" />
+            <input type="text" name="modelo" id="modelo" class="form-control" placeholder="" value="<?= $_POST['modelo'] ?? '' ?>" />
         </div>
         <div class="input-group col-md-6 mb-3">
             <div class="input-group-prepend">
@@ -30,8 +53,9 @@ require_once 'includes/cabecalho-admin.php';
             <select class="custom-select" id="marca" name="marca">
                 <option>Selecione...</option>
 
+                <?php $marca_id = $_POST['marca'] ?? 0; ?>
                 <?php foreach (get_marcas() as $marca) : ?>
-                    <option value="<?= $marca['id'] ?>">
+                    <option value="<?= $marca['id'] ?>" <?= ($marca_id == $marca['id']) ? 'selected' : null ?> >
                         <?= $marca['marca'] ?>
                     </option>
                 <?php endforeach; ?>
@@ -42,7 +66,7 @@ require_once 'includes/cabecalho-admin.php';
             <div class="input-group-prepend">
                 <label class="input-group-text" for="preco">Preço:</label>
             </div>
-            <input type="number" name="preco" id="preco" class="form-control" placeholder="" />
+            <input type="number" name="preco" id="preco" class="form-control" placeholder="" value="<?= $_POST['preco'] ?? '' ?>" />
         </div>
         <div class="input-group col-md-6 mb-3">
             <div class="input-group-prepend">
@@ -57,7 +81,7 @@ require_once 'includes/cabecalho-admin.php';
             <div class="input-group-prepend">
                 <label class="input-group-text" for="descricao">Descrição:</label>
             </div>
-            <textarea class="form-control" name="descricao" id="descricao" rows="5"></textarea>
+            <textarea class="form-control" name="descricao" id="descricao" rows="5"><?= $_POST['descricao'] ?? '' ?></textarea>
         </div>
         <div class="input-group col-md-12">
             <button class="btn btn-primary px-5">

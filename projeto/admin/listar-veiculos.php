@@ -3,6 +3,20 @@
 // Configurações Gerais
 require_once "../src/config.php";
 
+try 
+{
+    if ($_GET)
+    {
+        $id = (int) ($_GET['excluir'] ?? 0);
+        excluir_veiculo($id);
+        set_app_mensagem('Veículo excluído com sucesso!');
+    }
+}
+catch(Exception $exc)
+{
+    set_app_mensagem($exc->getMessage(), 'erro');
+}
+
 $titulo_pagina = "Veículos";
 require_once 'includes/cabecalho-admin.php';
 ?>
@@ -14,6 +28,9 @@ require_once 'includes/cabecalho-admin.php';
     <p>
         Confira abaixo a lista dos veículos cadastradas.
     </p>
+
+    <?php show_app_mensagem(); ?>
+
     <table class="table table-hover">
         <thead>
             <tr>
@@ -26,17 +43,19 @@ require_once 'includes/cabecalho-admin.php';
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>
-                    <img src="../img/sem-foto.jpg" class="img-thumbnail" />
-                </td>
-                <td>Cruze</td>
-                <td>Chevrolet</td>
-                <td>R$ 18.000,00</td>
-                <td><a href="editar-veiculo.php" class="btn btn-primary"><i class="fas fa-edit"></i></a></td>
-                <td><a href="#" class="btn btn-danger"><i class="far fa-trash-alt"></i></a></td>
-            </tr>
+            <?php foreach (get_veiculos() as $veiculo) : ?>
+                <tr>
+                    <td><?= $veiculo['id'] ?></td>
+                    <td>
+                        <img src="../img/sem-foto.jpg" class="img-thumbnail" />
+                    </td>
+                    <td><?= $veiculo['modelo'] ?></td>
+                    <td><?= $veiculo['marca_id'] ?></td>
+                    <td>R$ <?= number_format($veiculo['preco'], 2, ',', '.') ?></td>
+                    <td><a href="editar-veiculo.php?id=<?= $veiculo['id'] ?>" class="btn btn-primary"><i class="fas fa-edit"></i></a></td>
+                    <td><a href="listar-veiculos.php?excluir=<?= $veiculo['id'] ?>" class="btn btn-danger"><i class="far fa-trash-alt"></i></a></td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 <?php require_once 'includes/rodape-admin.php'; ?>

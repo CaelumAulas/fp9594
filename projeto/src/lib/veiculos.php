@@ -27,3 +27,80 @@ function cadastrar_veiculo(string $modelo, int $marca_id, float $preco, string $
         throw new Exception('Não foi possível cadastrar os dados do veículo!');
     }
 }
+
+/**
+ * Retorna as informações de um veículo específico no sistema
+ * @param int $id       ID do veículo a ser retornado
+ * @return array|null
+ */
+function get_veiculo_por_id(int $id)
+{
+    $sql = "SELECT * FROM veiculos WHERE id = ?";
+    $params = array($id);
+
+    return db_query($sql, 'i', $params, true);
+}
+
+/**
+ * Retorna a lista de veículos cadastrados no sistema
+ * @return array
+ */
+function get_veiculos() : array 
+{
+    $sql = "SELECT * FROM veiculos";
+    return db_query($sql);
+}
+
+/**
+ * Exclui um veículo no sistema
+ * @param int $id       ID do Veículo a ser excluído
+ * @return void
+ */
+function excluir_veiculo(int $id) 
+{
+    if ($id <= 0) {
+        throw new Exception('ID inválido!');
+    }
+
+    $veiculo_info = get_veiculo_por_id($id);
+    if (!$veiculo_info) {
+        throw new Exception('Veículo informado não existe!');
+    }
+
+    $sql = "DELETE FROM veiculos WHERE id = ?";
+    $params = array($id);
+
+    $resultado = db_execute($sql, 'i', $params);
+    if (!$resultado) {
+        throw new Exception('Não foi possível excluir o veículo selecionado!');
+    }
+}
+
+/**
+ * Atualiza um veículo no sistema
+ * @param string $modelo     Nome da modelo a ser cadastrada
+ * @param int $marca_id      ID da Marca
+ * @param float $preco       Preço do veículo
+ * @param string $foto       Foto do veículo
+ * @param string $descricao  Descrição do veículo
+ * @param int $id            ID do veículo
+ * @return void
+ */
+function atualizar_veiculo(string $modelo, int $marca_id, float $preco, string $foto, string $descricao, int $id = 0)
+{
+    $modelo = filter_var($modelo, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES) ?: throw new Exception('Modelo é obrigatório!');
+    if ($marca_id <= 0) throw new Exception('Marca inválida!');
+    if ($preco <= 0) throw new Exception('Preço inválido!');
+    $descricao = filter_var($descricao, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES) ?: throw new Exception('Descrição é obrigatória!');
+    
+    if ($id <= 0) {
+        throw new Exception('ID inválido!');
+    }
+
+    $sql = "UPDATE veiculos SET marca_id = ?, modelo = ?, preco = ?, foto = ?, descricao = ? WHERE id = ?";
+    $params = array($marca_id, $modelo, $preco, $foto, $descricao, $id);
+    $resultado = db_execute($sql, 'isdssi', $params);
+    if (!$resultado) {
+        throw new Exception('Não foi possível atualizar os dados do veículo!');
+    }
+}

@@ -1,5 +1,22 @@
 <?php 
 
+// Configurações Gerais
+require_once '../src/config.php';
+
+try
+{
+    if ($_POST)
+    {
+        $login = $_POST['usuario'] ?? "";
+        $senha = $_POST['senha'] ?? "";
+        login_usuario($login, $senha);
+    }
+}
+catch(Exception $exc)
+{
+    set_app_mensagem($exc->getMessage(), 'erro');
+}
+
 $titulo_pagina = "Login";
 require_once 'includes/cabecalho-admin.php';
 ?>
@@ -12,6 +29,9 @@ require_once 'includes/cabecalho-admin.php';
         Preencha o formulário abaixo para ter acesso à Área Administrativa:
     </p>
     <hr>
+
+    <?php show_app_mensagem(); ?>
+
     <form action="" class="row" method="POST">
         <div class="input-group col-6">
             <div class="input-group-prepend">

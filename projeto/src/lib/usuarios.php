@@ -25,8 +25,9 @@ function cadastrar_usuario(string $login, string $senha, string $csenha, bool $a
         throw new Exception('Já existe um usuário com o login informado!');
     }
 
+    $hash_senha = password_hash($senha, PASSWORD_BCRYPT);
     $sql = "INSERT INTO usuarios(login, senha, ativo) VALUES (?, ?, ?)";
-    $params = array( $login, $senha, $ativo );
+    $params = array( $login, $hash_senha, $ativo );
     $resultado = db_execute($sql, 'ssi', $params);
 
     if (!$resultado) {
@@ -129,8 +130,9 @@ function atualizar_usuario(string $login, string $senha, string $csenha, bool $a
 
     if ($senha)
     {
+        $hash_senha = password_hash($senha, PASSWORD_BCRYPT);
         $sql = "UPDATE usuarios SET login = ?, senha = ?, ativo = ? WHERE id = ?";
-        $params = array( $login, $senha, $ativo, $id );
+        $params = array( $login, $hash_senha, $ativo, $id );
         $ptypes = 'ssii';
     }
 
@@ -138,4 +140,35 @@ function atualizar_usuario(string $login, string $senha, string $csenha, bool $a
     if (!$resultado) {
         throw new Exception('Não foi possível realizar a atualização do usuário informado!');
     }
+}
+
+/**
+ * Realiza o login do usuário no sistema
+ * @param string $login     Login do usuário
+ * @param string $senha     Senha do usuário
+ */
+function login_usuario(string $login, string $senha)
+{
+    $login = filter_var($login, FILTER_VALIDATE_EMAIL) ?: throw new Exception('Usuário deve ser um e-mail válido!');
+    $senha = $senha ?: throw new Exception('Senha é obrigatório!');
+
+    $sql = "SELECT * FROM usuarios WHERE login = ?";
+    $params = array($login);
+    $usuario_info = db_query($sql, 's', $params, true);
+
+    if (!$usuario_info) {
+        throw new Exception("Usuário informado não existe!");
+    }
+
+    if (!$usuario_info['ativo']) {
+        throw new Exception('Seu usuário encontra-se inativo no momento. Entre em contato com o administrador!');
+    }
+
+    $hash = $usuario_info['senha'];
+    if (!password_verify($senha, $hash)) {
+        throw new Exception('Usuário/Senha inválidos!');
+    }
+    
+    header('Location: index.php');
+    exit;
 }

@@ -168,7 +168,41 @@ function login_usuario(string $login, string $senha)
     if (!password_verify($senha, $hash)) {
         throw new Exception('Usuário/Senha inválidos!');
     }
-    
+
+    session_regenerate_id(true);
+    set_usuario_logado($login);
+
     header('Location: index.php');
+    exit;
+}
+
+/**
+ * Seta a informação do usuário logado no momento dentro da aplicação
+ * @param string $login     Login do usuário ativo na aplicação
+ */
+function set_usuario_logado(string $login)
+{
+    $_SESSION['user_logado'] = $login;
+}
+
+/**
+ * Retorna o usuario atualmente logado no sistema
+ * @return string|null
+ */
+function get_usuario_logado()
+{
+    return $_SESSION['user_logado'] ?? '';
+}
+
+/**
+ * Realiza o logout do usuário
+ * @return void
+ */
+function logout()
+{
+    session_destroy();
+    unset($_SESSION['user_logado']);
+
+    header('Location: login.php');
     exit;
 }

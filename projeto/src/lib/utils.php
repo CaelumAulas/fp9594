@@ -62,3 +62,18 @@ function show_app_mensagem()
         ";
     }
 }
+
+/**
+ * Bloqueia o acesso ao admin caso o usuário não esteja logado
+ * @return void
+ */
+function bloquear_acesso_admin()
+{
+    $url = $_SERVER['REQUEST_URI'];
+    $is_pagina_admin = (str_contains($url, '/admin') && !str_contains($url, 'login.php'));
+
+    if (!get_usuario_logado() and $is_pagina_admin) {
+        header('Location: login.php');
+        exit;
+    }
+}

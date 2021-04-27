@@ -22,44 +22,46 @@
             Administração
         </a>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="##navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Veículos
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="cadastrar-veiculo.php">Cadastrar Veículo</a>
-                        <a class="dropdown-item" href="listar-veiculos.php">Listar Veículos</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Usuários
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                        <a class="dropdown-item" href="cadastrar-usuario.php">Cadastrar Usuário</a>
-                        <a class="dropdown-item" href="listar-usuarios.php">Listar Usuários</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Marcas
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
-                        <a class="dropdown-item" href="cadastrar-marca.php">Cadastrar Marca</a>
-                        <a class="dropdown-item" href="listar-marcas.php">Listar Marcas</a>
-                    </div>
-                </li>
-            </ul>
+        <?php if (get_usuario_logado()) : ?>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="##navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Veículos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="cadastrar-veiculo.php">Cadastrar Veículo</a>
+                            <a class="dropdown-item" href="listar-veiculos.php">Listar Veículos</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Usuários
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                            <a class="dropdown-item" href="cadastrar-usuario.php">Cadastrar Usuário</a>
+                            <a class="dropdown-item" href="listar-usuarios.php">Listar Usuários</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Marcas
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                            <a class="dropdown-item" href="cadastrar-marca.php">Cadastrar Marca</a>
+                            <a class="dropdown-item" href="listar-marcas.php">Listar Marcas</a>
+                        </div>
+                    </li>
+                </ul>
 
-            <span class="d-inline-block mr-3 text-white">Olá, <strong>admin@admin.com.br</strong></span>
-            <a href="index.php" class="btn btn-danger btn-sm">
-                Logout
-            </a>
-        </div>
+                <span class="d-inline-block mr-3 text-white">Olá, <strong><?= get_usuario_logado() ?></strong></span>
+                <a href="index.php?logout=true" class="btn btn-danger btn-sm">
+                    Logout
+                </a>
+            </div>
+        <?php endif; ?>
     </nav>
     <main class="container bg-white px-4 pb-4 pt-0 border border-top-0">

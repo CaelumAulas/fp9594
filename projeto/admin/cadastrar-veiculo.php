@@ -1,5 +1,8 @@
 <?php 
 
+// Configurações Gerais
+require_once "../src/config.php";
+
 $titulo_pagina = "Cadastrar Veículo";
 require_once 'includes/cabecalho-admin.php';
 ?>
@@ -26,9 +29,13 @@ require_once 'includes/cabecalho-admin.php';
             </div>
             <select class="custom-select" id="marca" name="marca">
                 <option>Selecione...</option>
-                <option value="1">Marca 1</option>
-                <option value="2">Marca 2</option>
-                <option value="3">Marca 3</option>
+
+                <?php foreach (get_marcas() as $marca) : ?>
+                    <option value="<?= $marca['id'] ?>">
+                        <?= $marca['marca'] ?>
+                    </option>
+                <?php endforeach; ?>
+
             </select>
         </div>
         <div class="input-group col-md-6 mb-3">

@@ -1,5 +1,8 @@
 <?php 
 
+// Configurações Gerais
+require_once "../src/config.php";
+
 $titulo_pagina = "Dashboard";
 require_once 'includes/cabecalho-admin.php';
 ?>

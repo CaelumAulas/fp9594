@@ -9,9 +9,18 @@ define('DB_NAME', 'autocaelum');
 define('DB_USER', 'root2');
 define('DB_PWD', 'admin');
 
+// session_set_cookie_params(60 * 2);
+session_start();
+
 /** Bibliotecas de Funções */
 require_once "lib/db.php";
 require_once "lib/utils.php";
 require_once "lib/marcas.php";
 require_once "lib/usuarios.php";
 require_once "lib/veiculos.php";
+
+if (isset($_GET['logout'])) {
+    logout();
+}
+
+bloquear_acesso_admin();

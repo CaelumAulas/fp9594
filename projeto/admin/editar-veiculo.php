@@ -1,5 +1,8 @@
 <?php 
 
+// Configurações Gerais
+require_once "../src/config.php";
+
 $titulo_pagina = "Editar Veículo";
 require_once 'includes/cabecalho-admin.php';
 ?>

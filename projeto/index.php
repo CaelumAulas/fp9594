@@ -44,7 +44,7 @@ require_once "src/includes/cabecalho.php";
 
             <div class="row mx-0">
                 <div class="col-md-3 px-0">
-                    <img src="img/sem-foto.jpg" class="img-thumbnail" alt="" />
+                    <img src="img/veiculos/<?= $veiculo['foto'] ?: "../sem-foto.jpg" ?>" class="img-thumbnail" alt="" />
                 </div>
                 <div class="col-md-9">
                     <h3><?= $veiculo['modelo'] ?></h3>

@@ -11,7 +11,7 @@ try
         $modelo = $_POST['modelo'] ?? '';
         $marca_id = (int) ($_POST['marca'] ?? 0);
         $preco = (float) ($_POST['preco'] ?? 0);
-        $foto = $_POST['foto'] ?? '';
+        $foto = upload_imagem('foto', 'veiculos');
         $descricao = $_POST['descricao'] ?? '';
 
         atualizar_veiculo($modelo, $marca_id, $preco, $foto, $descricao, $id);
@@ -47,7 +47,7 @@ require_once 'includes/cabecalho-admin.php';
 
     <?php show_app_mensagem(); ?>
 
-    <form method="POST" class="row">
+    <form method="POST" class="row" enctype="multipart/form-data">
         <div class="input-group col-md-6 mb-3">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="marca">Modelo:</label>

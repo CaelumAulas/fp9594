@@ -77,3 +77,58 @@ function bloquear_acesso_admin()
         exit;
     }
 }
+
+/**
+ * Realiza o upload de uma imagem
+ * @param string $campo         Campo do formulário que contém o arquivo que será feito o upload
+ * @param string $diretorio     Nome do diretório onde a imagem deve ser salva
+ * @param int $largura          Largura mínima que a imagem deve ter
+ * @param int $altura           Altura mínima que a imagem deve ter
+ * @return string               Nome da imagem salva no servidor
+ */
+function upload_imagem(string $campo, string $diretorio = '', int $largura = 500, int $altura = 500)
+{
+    $novo_nome = '';
+    $nome_imagem = $_FILES[$campo]['name'] ?: '';
+    
+    if ($nome_imagem)
+    {
+        $extensoes_validas = array('jpg', 'jpeg', 'gif', 'png');
+        $extensao = strtolower(pathinfo($nome_imagem, PATHINFO_EXTENSION));
+
+        if (!in_array($extensao, $extensoes_validas)) {
+            throw new Exception('Extensão inválida! Selecione um arquivo JPG, GIF ou PNG!');
+        }
+
+        list($width, $height) = getimagesize($_FILES[$campo]['tmp_name']);
+        if ($width < $largura or $height < $altura) {
+            throw new Exception("As dimensões da imagem devem ter no mínimo $largura x $altura!");
+        }
+
+        $novo_nome = md5(rand(1000, 1000000)) . "." . $extensao;
+        $caminho_salvar = DIR_IMG . $diretorio . '/' . $novo_nome;
+        
+        if (!move_uploaded_file($_FILES[$campo]['tmp_name'], $caminho_salvar)) {
+            throw new Exception('Não foi possível realizar o upload da imagem!');
+        }
+    }
+
+    return $novo_nome;
+}
+
+/**
+ * Exclui um arquivo de imagem de um diretório específico
+ * @param string $arquivo       Nome do arquivo que deve ser excluído
+ * @param string $diretorio     Nome do diretório onde verificar a imagem
+ */
+function excluir_imagem(string $arquivo, string $diretorio = '')
+{
+    if ($arquivo) 
+    {
+        $caminho_arquivo = DIR_IMG . $diretorio . '/' . $arquivo;
+        if (file_exists($caminho_arquivo)) 
+        {
+            unlink($caminho_arquivo);
+        }
+    }
+}

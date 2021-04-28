@@ -8,6 +8,7 @@ define('DB_HOST', 'localhost');
 define('DB_NAME', 'autocaelum');
 define('DB_USER', 'root2');
 define('DB_PWD', 'admin');
+define('DIR_IMG', $_SERVER['DOCUMENT_ROOT'] . '/fp9594/projeto/img/');
 
 // session_set_cookie_params(60 * 2);
 session_start();

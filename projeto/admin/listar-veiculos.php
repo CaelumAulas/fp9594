@@ -47,7 +47,7 @@ require_once 'includes/cabecalho-admin.php';
                 <tr>
                     <td><?= $veiculo['id'] ?></td>
                     <td>
-                        <img src="../img/sem-foto.jpg" class="img-thumbnail" />
+                        <img src="../img/veiculos/<?= $veiculo['foto'] ?: "../sem-foto.jpg" ?>" class="img-thumbnail" />
                     </td>
                     <td><?= $veiculo['modelo'] ?></td>
                     <td><?= $veiculo['marca'] ?: 'SEM MARCA' ?></td>

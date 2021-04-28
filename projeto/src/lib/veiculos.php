@@ -82,6 +82,8 @@ function excluir_veiculo(int $id)
     if (!$resultado) {
         throw new Exception('Não foi possível excluir o veículo selecionado!');
     }
+
+    excluir_imagem( $veiculo_info['foto'], 'veiculos' );
 }
 
 /**
@@ -105,10 +107,26 @@ function atualizar_veiculo(string $modelo, int $marca_id, float $preco, string $
         throw new Exception('ID inválido!');
     }
 
-    $sql = "UPDATE veiculos SET marca_id = ?, modelo = ?, preco = ?, foto = ?, descricao = ? WHERE id = ?";
-    $params = array($marca_id, $modelo, $preco, $foto, $descricao, $id);
-    $resultado = db_execute($sql, 'isdssi', $params);
+    $veiculo_info = get_veiculo_por_id($id);
+
+    $sql = "UPDATE veiculos SET marca_id = ?, modelo = ?, preco = ?, descricao = ? WHERE id = ?";
+    $params = array($marca_id, $modelo, $preco, $descricao, $id);
+    $ptypes = 'isdsi';
+
+    if ($foto)
+    {
+        $sql = "UPDATE veiculos SET marca_id = ?, modelo = ?, preco = ?, foto = ?, descricao = ? WHERE id = ?";
+        $params = array($marca_id, $modelo, $preco, $foto, $descricao, $id);
+        $ptypes = 'isdssi';
+    }
+
+    $resultado = db_execute($sql, $ptypes, $params);
     if (!$resultado) {
         throw new Exception('Não foi possível atualizar os dados do veículo!');
+    }
+
+    if ($foto && $veiculo_info['foto'])
+    {
+        excluir_imagem($veiculo_info['foto'], 'veiculos');
     }
 }

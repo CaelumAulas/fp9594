@@ -50,7 +50,7 @@ require_once 'includes/cabecalho-admin.php';
                         <img src="../img/sem-foto.jpg" class="img-thumbnail" />
                     </td>
                     <td><?= $veiculo['modelo'] ?></td>
-                    <td><?= $veiculo['marca_id'] ?></td>
+                    <td><?= $veiculo['marca'] ?: 'SEM MARCA' ?></td>
                     <td>R$ <?= number_format($veiculo['preco'], 2, ',', '.') ?></td>
                     <td><a href="editar-veiculo.php?id=<?= $veiculo['id'] ?>" class="btn btn-primary"><i class="fas fa-edit"></i></a></td>
                     <td><a href="listar-veiculos.php?excluir=<?= $veiculo['id'] ?>" class="btn btn-danger"><i class="far fa-trash-alt"></i></a></td>

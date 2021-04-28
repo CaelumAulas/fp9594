@@ -43,11 +43,19 @@ function get_veiculo_por_id(int $id)
 
 /**
  * Retorna a lista de veículos cadastrados no sistema
+ * @param int $marca_id         ID da marca dos veículos
  * @return array
  */
-function get_veiculos() : array 
+function get_veiculos(int $marca_id = 0) : array 
 {
-    $sql = "SELECT * FROM veiculos";
+    $sql = "SELECT v.*, m.marca FROM veiculos AS v LEFT JOIN marcas AS m ON v.marca_id = m.id";
+
+    if ($marca_id > 0) 
+    {
+        $sql .= " WHERE v.marca_id = ?";
+        return db_query( $sql, 'i', array($marca_id) );
+    }
+
     return db_query($sql);
 }
 

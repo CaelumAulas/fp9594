@@ -20,6 +20,16 @@ require_once "lib/marcas.php";
 require_once "lib/usuarios.php";
 require_once "lib/veiculos.php";
 
+/**
+ * Registra uma função de autocarregamento de classes da aplicação
+ */
+spl_autoload_register(function($classe) {
+    $classe_path = __DIR__ . '/classes/' . str_replace('\\', '/', $classe) . '.php';
+    if (file_exists($classe_path)) {
+        require_once $classe_path;
+    }
+});
+
 if (isset($_GET['logout'])) {
     logout();
 }

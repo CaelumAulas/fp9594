@@ -38,6 +38,3 @@ if (isset($_GET['logout'])) {
 }
 
 bloquear_acesso_admin();
-
-// $mysql = new MySqlDb(DB_HOST, DB_USER, DB_PWD, DB_NAME);
-// $mysql->insert('minha_tabela', array('col1', 'col2', 'col3'), array('v1', true, 78.50));

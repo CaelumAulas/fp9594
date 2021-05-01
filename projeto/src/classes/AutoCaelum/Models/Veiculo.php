@@ -12,6 +12,11 @@ class Veiculo
     private string $descricao = '';
     private string $foto = '';
 
+    public function __construct()
+    {
+        $this->marca = new Marca();
+    }
+
     /**
      * Getters & Setters da Classe
      */

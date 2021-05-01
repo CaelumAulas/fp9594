@@ -2,9 +2,15 @@
 
 // Configurações Gerais
 require_once "../src/config.php";
+use AutoCaelum\DAO\VeiculoDAO;
+use AutoCaelum\DAO\MarcaDAO;
+use AutoCaelum\Models\Veiculo;
 
 try 
 {
+    $veiculoDao = new VeiculoDAO();
+    $marcaDao = new MarcaDAO();
+
     if ($_POST)
     {
         $id = (int) ($_POST['veiculo_id'] ?? 0);
@@ -14,7 +20,17 @@ try
         $foto = upload_imagem('foto', 'veiculos');
         $descricao = $_POST['descricao'] ?? '';
 
-        atualizar_veiculo($modelo, $marca_id, $preco, $foto, $descricao, $id);
+        $veiculo = new Veiculo();
+        $veiculo->setModelo($modelo);
+        $veiculo->setPreco($preco);
+        $veiculo->setFoto($foto);
+        $veiculo->getMarca()->setId($marca_id);
+        $veiculo->setDescricao($descricao);
+        $veiculo->setId($id);
+
+        $veiculoDao->setDataObj($veiculo);
+        $veiculoDao->atualizar();
+
         unset($_POST);
         set_app_mensagem('Veículo atualizado com sucesso!');
     }
@@ -25,7 +41,7 @@ catch(Exception $exc)
 }
 
 $id = (int) ($_GET['id'] ?? 0);
-$veiculo_info = get_veiculo_por_id($id);
+$veiculo_info = $veiculoDao->getPorId($id);
 if (!$veiculo_info) {
     header('Location: listar-veiculos.php');
     exit;
@@ -52,7 +68,7 @@ require_once 'includes/cabecalho-admin.php';
             <div class="input-group-prepend">
                 <label class="input-group-text" for="marca">Modelo:</label>
             </div>
-            <input type="text" name="modelo" id="modelo" class="form-control" placeholder="" value="<?= $veiculo_info['modelo'] ?>" />
+            <input type="text" name="modelo" id="modelo" class="form-control" placeholder="" value="<?= $veiculo_info->getModelo() ?>" />
         </div>
         <div class="input-group col-md-6 mb-3">
             <div class="input-group-prepend">
@@ -61,10 +77,10 @@ require_once 'includes/cabecalho-admin.php';
             <select class="custom-select" id="marca" name="marca">
                 <option>Selecione...</option>
 
-                <?php $marca_id = $veiculo_info['marca_id']; ?>
-                <?php foreach (get_marcas() as $marca) : ?>
-                    <option value="<?= $marca['id'] ?>" <?= $marca_id == $marca['id'] ? 'selected' : null ?>>
-                        <?= $marca['marca'] ?>
+                <?php $marca_id = $veiculo_info->getMarca()->getId(); ?>
+                <?php foreach ($marcaDao->listar() as $marca) : ?>
+                    <option value="<?= $marca->getId() ?>" <?= $marca_id == $marca->getId() ? 'selected' : null ?>>
+                        <?= $marca->getNome() ?>
                     </option>
                 <?php endforeach; ?>
 
@@ -74,7 +90,7 @@ require_once 'includes/cabecalho-admin.php';
             <div class="input-group-prepend">
                 <label class="input-group-text" for="preco">Preço:</label>
             </div>
-            <input type="number" name="preco" id="preco" class="form-control" placeholder="" value="<?= $veiculo_info['preco'] ?>" />
+            <input type="number" name="preco" id="preco" class="form-control" placeholder="" value="<?= $veiculo_info->getPreco() ?>" />
         </div>
         <div class="input-group col-md-6 mb-3">
             <div class="input-group-prepend">
@@ -89,13 +105,13 @@ require_once 'includes/cabecalho-admin.php';
             <div class="input-group-prepend">
                 <label class="input-group-text" for="descricao">Descrição:</label>
             </div>
-            <textarea class="form-control" name="descricao" id="descricao" rows="5"><?= $veiculo_info['descricao'] ?></textarea>
+            <textarea class="form-control" name="descricao" id="descricao" rows="5"><?= $veiculo_info->getDescricao() ?></textarea>
         </div>
         <div class="input-group col-md-12">
             <button class="btn btn-primary px-5">
                 <i class="far fa-save"></i> Salvar
             </button>
-            <input type="hidden" name="veiculo_id" value="<?= $veiculo_info['id'] ?>" />
+            <input type="hidden" name="veiculo_id" value="<?= $veiculo_info->getId() ?>" />
         </div>
     </form>
 <?php require_once 'includes/rodape-admin.php'; ?>

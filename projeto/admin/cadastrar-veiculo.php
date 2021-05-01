@@ -2,9 +2,14 @@
 
 // Configurações Gerais
 require_once "../src/config.php";
+use AutoCaelum\DAO\VeiculoDAO;
+use AutoCaelum\Models\Veiculo;
+use AutoCaelum\DAO\MarcaDAO;
 
 try 
 {
+    $marcaDao = new MarcaDAO();
+
     if ($_POST)
     {
         $modelo = $_POST['modelo'] ?? '';
@@ -13,7 +18,16 @@ try
         $foto = upload_imagem('foto', 'veiculos');
         $descricao = $_POST['descricao'] ?? '';
 
-        cadastrar_veiculo($modelo, $marca_id, $preco, $foto, $descricao);
+        $veiculo = new Veiculo();
+        $veiculo->setModelo($modelo);
+        $veiculo->setPreco($preco);
+        $veiculo->setFoto($foto);
+        $veiculo->setDescricao($descricao);
+        $veiculo->getMarca()->setId($marca_id);
+
+        $veiculoDao = new VeiculoDAO($veiculo);
+        $veiculoDao->cadastrar();
+
         unset($_POST);
         set_app_mensagem('Veículo cadastrado com sucesso!');
     }
@@ -54,9 +68,9 @@ require_once 'includes/cabecalho-admin.php';
                 <option>Selecione...</option>
 
                 <?php $marca_id = $_POST['marca'] ?? 0; ?>
-                <?php foreach (get_marcas() as $marca) : ?>
-                    <option value="<?= $marca['id'] ?>" <?= ($marca_id == $marca['id']) ? 'selected' : null ?> >
-                        <?= $marca['marca'] ?>
+                <?php foreach ($marcaDao->listar() as $marca) : ?>
+                    <option value="<?= $marca->getId() ?>" <?= ($marca_id == $marca->getId()) ? 'selected' : null ?> >
+                        <?= $marca->getNome() ?>
                     </option>
                 <?php endforeach; ?>
 

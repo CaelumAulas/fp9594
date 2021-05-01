@@ -2,13 +2,16 @@
 
 // Configurações Gerais
 require_once "../src/config.php";
+use AutoCaelum\DAO\VeiculoDAO;
 
 try 
 {
+    $veiculoDao = new VeiculoDAO();
+
     if ($_GET)
     {
         $id = (int) ($_GET['excluir'] ?? 0);
-        excluir_veiculo($id);
+        $veiculoDao->excluir($id);
         set_app_mensagem('Veículo excluído com sucesso!');
     }
 }
@@ -43,17 +46,17 @@ require_once 'includes/cabecalho-admin.php';
             </tr>
         </thead>
         <tbody>
-            <?php foreach (get_veiculos() as $veiculo) : ?>
+            <?php foreach ($veiculoDao->listar() as $veiculo) : ?>
                 <tr>
-                    <td><?= $veiculo['id'] ?></td>
+                    <td><?= $veiculo->getId() ?></td>
                     <td>
-                        <img src="../img/veiculos/<?= $veiculo['foto'] ?: "../sem-foto.jpg" ?>" class="img-thumbnail" />
+                        <img src="../img/veiculos/<?= $veiculo->getFoto() ?: "../sem-foto.jpg" ?>" class="img-thumbnail" />
                     </td>
-                    <td><?= $veiculo['modelo'] ?></td>
-                    <td><?= $veiculo['marca'] ?: 'SEM MARCA' ?></td>
-                    <td>R$ <?= number_format($veiculo['preco'], 2, ',', '.') ?></td>
-                    <td><a href="editar-veiculo.php?id=<?= $veiculo['id'] ?>" class="btn btn-primary"><i class="fas fa-edit"></i></a></td>
-                    <td><a href="listar-veiculos.php?excluir=<?= $veiculo['id'] ?>" class="btn btn-danger"><i class="far fa-trash-alt"></i></a></td>
+                    <td><?= $veiculo->getModelo() ?></td>
+                    <td><?= $veiculo->getMarca()->getNome() ?: 'SEM MARCA' ?></td>
+                    <td>R$ <?= number_format($veiculo->getPreco(), 2, ',', '.') ?></td>
+                    <td><a href="editar-veiculo.php?id=<?= $veiculo->getId() ?>" class="btn btn-primary"><i class="fas fa-edit"></i></a></td>
+                    <td><a href="listar-veiculos.php?excluir=<?= $veiculo->getId() ?>" class="btn btn-danger"><i class="far fa-trash-alt"></i></a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

@@ -48,6 +48,7 @@ class VeiculoDAO extends AbstractDAO
     public function atualizar(): void
     {
         $this->validateDataObject();
+        $veiculo_info = $this->getPorId( $this->dto->getId() );
 
         $cols_vals = array(
             'modelo' => $this->dto->getModelo(),
@@ -67,6 +68,10 @@ class VeiculoDAO extends AbstractDAO
         if (!$resultado) {
             throw new Exception('Não foi possível realizar a atualização do veículo informado!');
         }
+
+        if ($this->dto->getFoto() && $veiculo_info->getFoto()) {
+            excluir_imagem( $veiculo_info->getFoto(), 'veiculos' );
+        }
     }
 
     public function excluir(int $id): void
@@ -80,6 +85,8 @@ class VeiculoDAO extends AbstractDAO
         if (!$resultado) {
             throw new Exception('Não foi possível realizar a exclusão do veículo informado!');
         }
+
+        excluir_imagem( $veiculo_info->getFoto(), 'veiculos' );
     }
 
     public function getPorId(int $id)

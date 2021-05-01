@@ -8,9 +8,9 @@ class Marca
     private int $id = 0;
     private string $nome = '';
 
-    public function __construct(string $nome = '', int $id = 0)
+    public function __construct(?string $nome = null, int $id = 0)
     {
-        if ($nome) $this->setNome($nome);
+        if ($nome !== null) $this->setNome($nome);
         if ($id) $this->setId($id);
     }
 

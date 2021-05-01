@@ -2,13 +2,16 @@
 
 // Configurações Gerais 
 require_once '../src/config.php';
+use AutoCaelum\DAO\MarcaDAO;
 
 try 
 {
+    $marcaDao = new MarcaDAO();
+
     if ($_GET)
     {
         $id = (int) ($_GET['excluir'] ?? 0);
-        excluir_marca($id);
+        $marcaDao->excluir($id);
         set_app_mensagem('Marca excluída com sucesso!');
     }
 }
@@ -40,12 +43,12 @@ require_once 'includes/cabecalho-admin.php';
             </tr>
         </thead>
         <tbody>
-            <?php foreach (get_marcas() as $marca) : ?>
+            <?php foreach ($marcaDao->listar() as $marca) : ?>
                 <tr>
-                    <td><?= $marca['id'] ?></td>
-                    <td><?= $marca['marca'] ?></td>
-                    <td><a href="editar-marca.php?id=<?= $marca['id'] ?>" class="btn btn-primary"><i class="fas fa-edit"></i></a></td>
-                    <td><a href="listar-marcas.php?excluir=<?= $marca['id'] ?>" class="btn btn-danger"><i class="far fa-trash-alt"></i></a></td>
+                    <td><?= $marca->getId() ?></td>
+                    <td><?= $marca->getNome() ?></td>
+                    <td><a href="editar-marca.php?id=<?= $marca->getId() ?>" class="btn btn-primary"><i class="fas fa-edit"></i></a></td>
+                    <td><a href="listar-marcas.php?excluir=<?= $marca->getId() ?>" class="btn btn-danger"><i class="far fa-trash-alt"></i></a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

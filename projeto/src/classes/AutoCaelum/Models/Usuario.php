@@ -10,10 +10,10 @@ class Usuario
     private string $senha = '';
     private bool $ativo = true;
 
-    public function __construct(string $login = '', string $senha = '', bool $ativo = true, int $id = 0)
+    public function __construct(?string $login = null, ?string $senha = null, bool $ativo = true, int $id = 0)
     {
-        if ($login) $this->setLogin($login);
-        if ($senha) $this->setSenha($senha);
+        if ($login !== null) $this->setLogin($login);
+        if ($senha !== null) $this->setSenha($senha);
         if ($id) $this->setId($id);
         $this->setAtivo($ativo);
     }

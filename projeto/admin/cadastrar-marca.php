@@ -2,13 +2,19 @@
 
 // Configurações Gerais
 require_once '../src/config.php';
+use AutoCaelum\DAO\MarcaDAO;
+use AutoCaelum\Models\Marca;
 
 try 
 {
     if ($_POST)
     {
-        $marca = $_POST['marca'] ?? "";
-        cadastrar_marca($marca);
+        $nome_marca = $_POST['marca'] ?? "";
+
+        $marca = new Marca($nome_marca);
+        $marcaDao = new MarcaDAO($marca);
+        $marcaDao->cadastrar();
+
         set_app_mensagem('Marca cadastrada com sucesso!');
     }
 }

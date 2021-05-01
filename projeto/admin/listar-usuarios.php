@@ -2,13 +2,16 @@
 
 // Configurações Gerais
 require_once "../src/config.php";
+use AutoCaelum\DAO\UsuarioDAO;
 
 try 
 {
+    $userDao = new UsuarioDAO();
+
     if ($_GET)
     {
         $id = (int) ($_GET['excluir'] ?? 0);
-        excluir_usuario($id);
+        $userDao->excluir($id);
         set_app_mensagem('Usuário excluído com sucesso!');
     }
 }
@@ -43,13 +46,13 @@ require_once 'includes/cabecalho-admin.php';
         </thead>
         <tbody>
 
-            <?php foreach (get_usuarios() as $usuario) : ?>
+            <?php foreach ($userDao->listar() as $usuario) : ?>
                 <tr>
-                    <td><?= $usuario['id'] ?></td>
-                    <td><?= $usuario['login'] ?></td>
-                    <td><?= $usuario['ativo'] ? 'Sim' : 'Não' ?></td>
-                    <td><a href="editar-usuario.php?id=<?= $usuario['id'] ?>" class="btn btn-primary"><i class="fas fa-edit"></i></a></td>
-                    <td><a href="listar-usuarios.php?excluir=<?= $usuario['id'] ?>" class="btn btn-danger"><i class="far fa-trash-alt"></i></a></td>
+                    <td><?= $usuario->getId() ?></td>
+                    <td><?= $usuario->getLogin() ?></td>
+                    <td><?= $usuario->getAtivo() ? 'Sim' : 'Não' ?></td>
+                    <td><a href="editar-usuario.php?id=<?= $usuario->getId() ?>" class="btn btn-primary"><i class="fas fa-edit"></i></a></td>
+                    <td><a href="listar-usuarios.php?excluir=<?= $usuario->getId() ?>" class="btn btn-danger"><i class="far fa-trash-alt"></i></a></td>
                 </tr>
             <?php endforeach; ?>
 

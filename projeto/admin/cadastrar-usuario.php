@@ -2,6 +2,8 @@
 
 // Configurações Gerais
 require_once '../src/config.php';
+use AutoCaelum\DAO\UsuarioDAO;
+use AutoCaelum\Models\Usuario;
 
 try 
 {
@@ -11,7 +13,14 @@ try
         $senha = $_POST['senha'] ?? "";
         $csenha = $_POST['csenha'] ?? "";
         $ativo = isset($_POST['ativo']);
-        cadastrar_usuario($login, $senha, $csenha, $ativo);
+        
+        $user = new Usuario( $login, $senha, $ativo );
+        if ($senha != $csenha) {
+            throw new Exception('Senha e confirmação de senha devem ser iguais!');
+        }
+
+        $userDao = new UsuarioDAO($user);
+        $userDao->cadastrar();
         
         unset($_POST);
         set_app_mensagem('Usuário cadastrado com sucesso!');
